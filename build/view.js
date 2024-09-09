@@ -1,0 +1,1 @@
+console.log("Hello World! (from wbcom-block-buddypress-members-block block)");
