@@ -36,7 +36,7 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { title, sortType, viewType, limit, avatarSize, avatarRadius, rowSpacing, columnSpacing, carouselSpacing } = attributes;
+    const { title, sortType, viewType, limit, avatarSize, avatarRadius, membersPerRow, rowSpacing, columnSpacing, carouselSpacing } = attributes;
     const blockProps = useBlockProps();
 
     const [members, setMembers] = useState([]);
@@ -105,8 +105,25 @@ export default function Edit({ attributes, setAttributes }) {
                         >
                             {__('List', 'buddypress-members-block')}
                         </Button>
-                    </ButtonGroup>
+                        <Button
+                            isPressed={viewType === 'grid'}
+                            onClick={() => setAttributes({ viewType: 'grid' })}
+                        >
+                            {__('Grid', 'buddypress-members-block')}
+                        </Button>
+                    </ButtonGroup> 
                 </PanelBody>
+                {viewType === 'grid' && (
+                    <PanelBody title={__('Members Per Row', 'buddypress-members-block')}>
+                        <RangeControl
+                            label={__('Number of Members', 'buddypress-members-block')}
+                            value={membersPerRow}
+                            onChange={(value) => setAttributes({ membersPerRow: value })}
+                            min={1}
+                            max={5}
+                        />
+                    </PanelBody>
+                )}
                 {viewType === 'list' && (
                     <PanelBody title={__('Row Spacing', 'buddypress-members-block')}>
                         <RangeControl
@@ -116,6 +133,28 @@ export default function Edit({ attributes, setAttributes }) {
                             min={0}
                             max={50}
                         />
+                    </PanelBody>
+                )}
+                {(viewType === 'grid' || viewType === 'carousel') && (
+                    <PanelBody title={__('Spacing', 'buddypress-members-block')}>
+                        {viewType === 'grid' && (
+                            <RangeControl
+                                label={__('Column Spacing (px)', 'buddypress-members-block')}
+                                value={columnSpacing}
+                                onChange={(value) => setAttributes({ columnSpacing: value })}
+                                min={0}
+                                max={50}
+                            />
+                        )}
+                        {viewType === 'carousel' && (
+                            <RangeControl
+                                label={__('Column Spacing (px)', 'buddypress-members-block')}
+                                value={carouselSpacing}
+                                onChange={(value) => setAttributes({ carouselSpacing: value })}
+                                min={0}
+                                max={50}
+                            />
+                        )}
                     </PanelBody>
                 )}
                 <PanelBody title={__('Avatar Size', 'buddypress-members-block')}>
@@ -143,6 +182,8 @@ export default function Edit({ attributes, setAttributes }) {
                 className={`bp-members-preview ${viewType}`}
                 style={{
                     '--row-spacing': viewType === 'list' ? `${rowSpacing}px` : undefined,
+                    '--column-spacing': viewType === 'grid' ? `${columnSpacing}px` : undefined,
+                    '--members-per-row': viewType === 'grid' ? membersPerRow : undefined,
                 }}
             >
                 {isLoading ? (
@@ -162,9 +203,7 @@ export default function Edit({ attributes, setAttributes }) {
                                     style={{ width: `${avatarSize}px`, height: `${avatarSize}px`, borderRadius: `${avatarRadius}px` }}
                                 />
                             </a>
-							<a href={member.link}>
-								<div className="bp-member-name">{member.name}</div>
-							</a>
+							<a href={member.link}><div className="bp-member-name">{member.name}</div></a>
                         </div>
                     ))
                 )}

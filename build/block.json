@@ -33,6 +33,10 @@
       "type": "number",
       "default": 150
     },
+    "membersPerRow": {
+      "type": "number",
+      "default": 4
+    },
     "rowSpacing": {
       "type": "number",
       "default": 10

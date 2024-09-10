@@ -4,7 +4,7 @@
  * Replace them with your own styles or remove the file completely.
  */
 
- .wp-block-create-block-buddypress-members-block {
+.wp-block-create-block-buddypress-members-block {
     background-color: #fff;
 }
 
@@ -17,17 +17,17 @@
     flex-direction: column;
 
     .bp-member-item {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
         padding: 10px;
         border: 1px solid #ddd;
         margin-bottom: var(--row-spacing, 10px);
         text-align: center;
 
-		>a {
-			display: flex;
-		}
+        >a {
+            display: flex;
+        }
 
         img.bp-member-avatar {
             width: 50px;
@@ -44,7 +44,7 @@
 
 .bp-members-preview.grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(var(--members-per-row, 4), 1fr);
     gap: var(--column-spacing, 10px);
 }
 
@@ -64,6 +64,10 @@
     border: 1px solid #ddd;
     text-align: center;
 
+    a {
+        display: block;
+    }
+
     img.bp-member-avatar {
         width: var(--avatar-size, 50px);
         height: var(--avatar-size, 50px);
@@ -74,4 +78,8 @@
     .bp-member-name {
         font-weight: bold;
     }
+}
+
+.editor-styles-wrapper .bp-member-item a {
+    text-decoration: none;
 }
