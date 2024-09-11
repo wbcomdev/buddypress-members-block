@@ -19,6 +19,9 @@ import { useState, useEffect } from '@wordpress/element';
 
 import apiFetch from '@wordpress/api-fetch';
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
+
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -71,7 +74,7 @@ export default function Edit({ attributes, setAttributes }) {
     return (
         <div {...blockProps}>
             <InspectorControls>
-				<PanelBody title={__('Block Title', 'buddypress-members-block')}>
+                <PanelBody title={__('Block Title', 'buddypress-members-block')}>
                     <TextControl
                         label={__('Block Title', 'buddypress-members-block')}
                         value={title}
@@ -111,9 +114,15 @@ export default function Edit({ attributes, setAttributes }) {
                         >
                             {__('Grid', 'buddypress-members-block')}
                         </Button>
+                        <Button
+                            isPressed={viewType === 'carousel'}
+                            onClick={() => setAttributes({ viewType: 'carousel' })}
+                        >
+                            {__('Carousel', 'buddypress-members-block')}
+                        </Button>
                     </ButtonGroup> 
                 </PanelBody>
-                {viewType === 'grid' && (
+                {(viewType === 'grid' || viewType === 'carousel') && (
                     <PanelBody title={__('Members Per Row', 'buddypress-members-block')}>
                         <RangeControl
                             label={__('Number of Members', 'buddypress-members-block')}
@@ -148,7 +157,7 @@ export default function Edit({ attributes, setAttributes }) {
                         )}
                         {viewType === 'carousel' && (
                             <RangeControl
-                                label={__('Column Spacing (px)', 'buddypress-members-block')}
+                                label={__('Carousel Spacing (px)', 'buddypress-members-block')}
                                 value={carouselSpacing}
                                 onChange={(value) => setAttributes({ carouselSpacing: value })}
                                 min={0}
@@ -175,7 +184,7 @@ export default function Edit({ attributes, setAttributes }) {
                 </PanelBody>
             </InspectorControls>
 
-			{/* Display Block Title */}
+            {/* Display Block Title */}
             {title && <h2>{title}</h2>}
 
             <div
@@ -184,6 +193,7 @@ export default function Edit({ attributes, setAttributes }) {
                     '--row-spacing': viewType === 'list' ? `${rowSpacing}px` : undefined,
                     '--column-spacing': viewType === 'grid' ? `${columnSpacing}px` : undefined,
                     '--members-per-row': viewType === 'grid' ? membersPerRow : undefined,
+                    '--carousel-spacing': viewType === 'carousel' ? `${carouselSpacing}px` : undefined,
                 }}
             >
                 {isLoading ? (
@@ -192,6 +202,31 @@ export default function Edit({ attributes, setAttributes }) {
                     <div>{error}</div>
                 ) : members.length === 0 ? (
                     <div>{__('No members found', 'buddypress-members-block')}</div>
+                ) : viewType === 'carousel' ? (
+                    <div className="swiper-container">
+                        <Swiper
+                            spaceBetween={carouselSpacing}
+                            slidesPerView={membersPerRow}
+                        >
+                            {members.map((member) => (
+                                <SwiperSlide key={member.id}>
+                                    <div className="bp-member-item">
+                                        <a href={member.link}>
+                                            <img
+                                                src={member.avatar_urls.full}
+                                                alt={member.name}
+                                                className="bp-member-avatar"
+                                                style={{ width: `${avatarSize}px`, height: `${avatarSize}px`, borderRadius: `${avatarRadius}px` }}
+                                            />
+                                        </a>
+                                        <a href={member.link}><div className="bp-member-name">{member.name}</div></a>
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+                            <div className="swiper-button-next"></div>
+                            <div className="swiper-button-prev"></div>
+                        </Swiper>
+                    </div>
                 ) : (
                     members.map((member) => (
                         <div className="bp-member-item" key={member.id}>
@@ -203,7 +238,7 @@ export default function Edit({ attributes, setAttributes }) {
                                     style={{ width: `${avatarSize}px`, height: `${avatarSize}px`, borderRadius: `${avatarRadius}px` }}
                                 />
                             </a>
-							<a href={member.link}><div className="bp-member-name">{member.name}</div></a>
+                            <a href={member.link}><div className="bp-member-name">{member.name}</div></a>
                         </div>
                     ))
                 )}

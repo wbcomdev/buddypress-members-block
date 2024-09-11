@@ -4,34 +4,37 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-create-block-buddypress-members-block {
+ .wp-block-create-block-buddypress-members-block {
     background-color: #fff;
 }
 
-.bp-members-preview {
-    display: flex;
-    flex-direction: column;
-}
-
 .bp-members-preview.list {
+    display: flex;
     flex-direction: column;
 
     .bp-member-item {
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
         gap: 15px;
         padding: 10px;
         border: 1px solid #ddd;
         margin-bottom: var(--row-spacing, 10px);
         text-align: center;
+        transition: all 0.3s ease;
 
-        >a {
+        &:hover {
+            background-color: #f7f7f7;
+        }
+
+        > a {
             display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         img.bp-member-avatar {
-            width: 50px;
-            height: 50px;
+            width: var(--avatar-size, 50px);
+            height: var(--avatar-size, 50px);
             border-radius: 50%;
             margin-bottom: 0;
         }
@@ -46,37 +49,51 @@
     display: grid;
     grid-template-columns: repeat(var(--members-per-row, 4), 1fr);
     gap: var(--column-spacing, 10px);
+
+    .bp-member-item {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: #f7f7f7;
+        }
+
+        a {
+            display: block;
+        }
+
+        img.bp-member-avatar {
+            width: var(--avatar-size, 50px);
+            height: var(--avatar-size, 50px);
+            border-radius: var(--avatar-radius, 50%);
+            margin-bottom: 10px;
+        }
+
+        .bp-member-name {
+            font-weight: bold;
+        }
+    }
 }
 
 .bp-members-preview.carousel {
-    display: flex;
-    overflow-x: auto;
-    gap: var(--carousel-spacing, 10px);
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
 
-    .bp-member-item {
-        display: inline-block;
-        margin-right: var(--carousel-spacing, 10px);
+        .bp-member-item {
+            text-align: center;
+        }
     }
 }
 
-.bp-member-item {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
+.bp-member-item a {
+    text-decoration: none;
+    color: inherit;
 
-    a {
-        display: block;
-    }
-
-    img.bp-member-avatar {
-        width: var(--avatar-size, 50px);
-        height: var(--avatar-size, 50px);
-        border-radius: 50%;
-        margin-bottom: 10px;
-    }
-
-    .bp-member-name {
-        font-weight: bold;
+    &:hover {
+        text-decoration: underline;
     }
 }
 
