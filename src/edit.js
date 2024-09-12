@@ -39,7 +39,7 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { title, sortType, viewType, limit, avatarSize, avatarRadius, membersPerRow, rowSpacing, columnSpacing, carouselSpacing } = attributes;
+    const { title, sortType, viewType, limit, avatarSize, avatarRadius, membersPerRow, rowSpacing, columnSpacing } = attributes;
     const blockProps = useBlockProps();
 
     const [members, setMembers] = useState([]);
@@ -144,22 +144,13 @@ export default function Edit({ attributes, setAttributes }) {
                         />
                     </PanelBody>
                 )}
-                {(viewType === 'grid' || viewType === 'carousel') && (
+                {(viewType === 'grid') && (
                     <PanelBody title={__('Spacing', 'buddypress-members-block')}>
                         {viewType === 'grid' && (
                             <RangeControl
                                 label={__('Column Spacing (px)', 'buddypress-members-block')}
                                 value={columnSpacing}
                                 onChange={(value) => setAttributes({ columnSpacing: value })}
-                                min={0}
-                                max={50}
-                            />
-                        )}
-                        {viewType === 'carousel' && (
-                            <RangeControl
-                                label={__('Carousel Spacing (px)', 'buddypress-members-block')}
-                                value={carouselSpacing}
-                                onChange={(value) => setAttributes({ carouselSpacing: value })}
                                 min={0}
                                 max={50}
                             />
@@ -193,7 +184,6 @@ export default function Edit({ attributes, setAttributes }) {
                     '--row-spacing': viewType === 'list' ? `${rowSpacing}px` : undefined,
                     '--column-spacing': viewType === 'grid' ? `${columnSpacing}px` : undefined,
                     '--members-per-row': viewType === 'grid' ? membersPerRow : undefined,
-                    '--carousel-spacing': viewType === 'carousel' ? `${carouselSpacing}px` : undefined,
                 }}
             >
                 {isLoading ? (
@@ -205,7 +195,6 @@ export default function Edit({ attributes, setAttributes }) {
                 ) : viewType === 'carousel' ? (
                     <div className="swiper-container">
                         <Swiper
-                            spaceBetween={carouselSpacing}
                             slidesPerView={membersPerRow}
                         >
                             {members.map((member) => (
@@ -234,7 +223,7 @@ export default function Edit({ attributes, setAttributes }) {
                                 <img
                                     src={member.avatar_urls.full}
                                     alt={member.name}
-                                    className="bp-member-avatar"
+                                    className="bp-member-avatar avatar"
                                     style={{ width: `${avatarSize}px`, height: `${avatarSize}px`, borderRadius: `${avatarRadius}px` }}
                                 />
                             </a>

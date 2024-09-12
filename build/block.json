@@ -27,11 +27,11 @@
     },
     "avatarSize": {
       "type": "number",
-      "default": 150
+      "default": 75
     },
     "avatarRadius": {
       "type": "number",
-      "default": 150
+      "default": 5
     },
     "membersPerRow": {
       "type": "number",
@@ -39,11 +39,11 @@
     },
     "rowSpacing": {
       "type": "number",
-      "default": 10
+      "default": 15
     },
     "columnSpacing": {
       "type": "number",
-      "default": 10
+      "default": 15
     }
   },
   "supports": {
