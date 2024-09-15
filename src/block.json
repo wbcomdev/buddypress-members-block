@@ -44,6 +44,14 @@
 		"columnSpacing": {
 			"type": "number",
 			"default": 15
+		},
+		"innerSpacing": {
+			"type": "number",
+			"default": 15
+		},
+		"boxBorderRadius": {
+			"type": "number",
+			"default": 4
 		}
 	},
 	"supports": {

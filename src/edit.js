@@ -13,7 +13,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
-import { TextControl, PanelBody, SelectControl, RangeControl, ButtonGroup, Button, Spinner } from '@wordpress/components';
+import { TextControl, PanelBody, SelectControl, RangeControl, ButtonGroup, Button, Spinner, ColorPicker } from '@wordpress/components';
 
 import { useState, useEffect } from '@wordpress/element';
 
@@ -39,7 +39,7 @@ import './editor.scss';
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { title, sortType, viewType, limit, avatarSize, avatarRadius, membersPerRow, rowSpacing, columnSpacing } = attributes;
+    const { title, sortType, viewType, limit, avatarSize, avatarRadius, membersPerRow, rowSpacing, columnSpacing, innerSpacing, boxBorderRadius, boxBorderColor } = attributes;
     const blockProps = useBlockProps();
 
     const [members, setMembers] = useState([]);
@@ -146,17 +146,41 @@ export default function Edit({ attributes, setAttributes }) {
                 )}
                 {(viewType === 'grid') && (
                     <PanelBody title={__('Spacing', 'buddypress-members-block')}>
-                        {viewType === 'grid' && (
-                            <RangeControl
-                                label={__('Column Spacing (px)', 'buddypress-members-block')}
-                                value={columnSpacing}
-                                onChange={(value) => setAttributes({ columnSpacing: value })}
-                                min={0}
-                                max={50}
-                            />
-                        )}
+                        <RangeControl
+                            label={__('Column Spacing (px)', 'buddypress-members-block')}
+                            value={columnSpacing}
+                            onChange={(value) => setAttributes({ columnSpacing: value })}
+                            min={0}
+                            max={50}
+                        />
+                        <RangeControl
+                            label={__('Inner Spacing (px)', 'buddypress-members-block')}
+                            value={innerSpacing}
+                            onChange={(value) => setAttributes({ innerSpacing: value })}
+                            min={0}
+                            max={30}
+                        />
+                        <RangeControl
+                            label={__('Box Border Radius (px)', 'buddypress-members-block')}
+                            value={boxBorderRadius}
+                            onChange={(value) => setAttributes({ boxBorderRadius: value })}
+                            min={0}
+                            max={20}
+                        />
                     </PanelBody>
                 )}
+                {(viewType === 'grid') && (
+                    <PanelBody title={__('Color', 'buddypress-members-block')}>
+                        <ColorPicker
+                            color={boxBorderColor}
+                            onChangeComplete={(value) => setAttributes({ boxBorderColor: value.hex })}
+                            disableAlpha
+                            presetColors={[
+                                { name: __('Default', 'buddypress-members-block'), color: '#dddddd' },
+                            ]}
+                        />
+                    </PanelBody>
+                 )}
                 <PanelBody title={__('Avatar Size', 'buddypress-members-block')}>
                     <RangeControl
                         label={__('Avatar Size (px)', 'buddypress-members-block')}
@@ -184,6 +208,8 @@ export default function Edit({ attributes, setAttributes }) {
                     '--row-spacing': viewType === 'list' ? `${rowSpacing}px` : undefined,
                     '--column-spacing': viewType === 'grid' ? `${columnSpacing}px` : undefined,
                     '--members-per-row': viewType === 'grid' ? membersPerRow : undefined,
+                    '--inner-spacing': viewType === 'grid' ? `${innerSpacing}px` : undefined,
+                    '--box-border-radius': viewType === 'grid' ? `${boxBorderRadius}px` : undefined,
                 }}
             >
                 {isLoading ? (

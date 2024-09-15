@@ -19,7 +19,28 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
+document.addEventListener('DOMContentLoaded', function () {
+    const swiperContainer = document.querySelector('.swiper-container');
+    const slidesPerViewAttr = swiperContainer.querySelector('.swiper-wrapper').getAttribute('slides-per-view');
+    const slidesPerView = parseInt(slidesPerViewAttr, 10) || 1; // Fallback to 1 if not found
 
-/* eslint-disable no-console */
-console.log( 'Hello World! (from wbcom-block-buddypress-members-block block)' );
-/* eslint-enable no-console */
+    const swiper = new Swiper(swiperContainer, {
+        slidesPerView: slidesPerView,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+            },
+            768: {
+                slidesPerView: 3,
+            },
+            1024: {
+                slidesPerView: slidesPerView, // Use the dynamically set value
+            },
+        },
+    });
+});

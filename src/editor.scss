@@ -44,14 +44,15 @@
 .bp-members-preview.grid {
     display: grid;
     grid-template-columns: repeat(var(--members-per-row, 4), 1fr);
-    gap: var(--column-spacing, 10px);
+    gap: var(--column-spacing, 15px);
 }
 
 .bp-members-preview.grid .bp-member-item {
-    padding: 15px;
+    padding: var(--inner-spacing, 15px);
     border: 1px solid #ddd;
     text-align: center;
     transition: all 0.3s ease;
+    border-radius: var(--box-border-radius, 4px);
 }
 
 .bp-members-preview.grid .bp-member-item:hover {
@@ -66,7 +67,7 @@
     width: var(--avatar-size, 50px);
     height: var(--avatar-size, 50px);
     border-radius: var(--avatar-radius, 50%);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .bp-members-preview.grid .bp-member-name {

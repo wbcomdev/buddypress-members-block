@@ -6,12 +6,17 @@
  */
 
 // Extract attributes passed from the block.
-$block_title   = isset( $attributes['title'] ) ? $attributes['title'] : '';
-$sort_type     = isset( $attributes['sortType'] ) ? $attributes['sortType'] : 'active';
-$limit         = isset( $attributes['limit'] ) ? $attributes['limit'] : 10;
-$avatar_size   = isset( $attributes['avatarSize'] ) ? $attributes['avatarSize'] : 100;
-$avatar_radius = isset( $attributes['avatarRadius'] ) ? $attributes['avatarRadius'] : 0;
-$view_type     = isset( $attributes['viewType'] ) ? $attributes['viewType'] : 'list';
+$block_title       = isset( $attributes['title'] ) ? $attributes['title'] : '';
+$sort_type         = isset( $attributes['sortType'] ) ? $attributes['sortType'] : 'active';
+$limit             = isset( $attributes['limit'] ) ? $attributes['limit'] : 10;
+$avatar_size       = isset( $attributes['avatarSize'] ) ? $attributes['avatarSize'] : 100;
+$avatar_radius     = isset( $attributes['avatarRadius'] ) ? $attributes['avatarRadius'] : 0;
+$view_type         = isset( $attributes['viewType'] ) ? $attributes['viewType'] : 'list';
+$members_per_row   = isset( $attributes['membersPerRow'] ) ? $attributes['membersPerRow'] : 4;
+$row_spacing       = isset( $attributes['rowSpacing'] ) ? $attributes['rowSpacing'] : 15;
+$column_spacing    = isset( $attributes['columnSpacing'] ) ? $attributes['columnSpacing'] : 15;
+$inner_spacing     = isset( $attributes['innerSpacing'] ) ? $attributes['innerSpacing'] : 15;
+$box_border_radius = isset( $attributes['boxBorderRadius'] ) ? $attributes['boxBorderRadius'] : 4;
 
 // Get members from the BuddyPress API.
 $endpoint = "/buddypress/v1/members?per_page={$limit}";
@@ -38,13 +43,6 @@ if ( empty( $members ) || ! is_array( $members ) ) {
 	return;
 }
 
-// Define CSS variables from block attributes.
-$members_per_row = isset( $attributes['membersPerRow'] ) ? $attributes['membersPerRow'] : 4;
-$row_spacing     = isset( $attributes['rowSpacing'] ) ? $attributes['rowSpacing'] : 10;
-$column_spacing  = isset( $attributes['columnSpacing'] ) ? $attributes['columnSpacing'] : 10;
-$avatar_size     = isset( $attributes['avatarSize'] ) ? $attributes['avatarSize'] : 150;
-$avatar_radius   = isset( $attributes['avatarRadius'] ) ? $attributes['avatarRadius'] : 0;
-
 ?>
 <div <?php echo esc_attr( get_block_wrapper_attributes() ); ?> 
 	style="
@@ -52,23 +50,48 @@ $avatar_radius   = isset( $attributes['avatarRadius'] ) ? $attributes['avatarRad
 		--row-spacing: <?php echo esc_attr( $row_spacing ); ?>px;
 		--column-spacing: <?php echo esc_attr( $column_spacing ); ?>px;
 		--avatar-size: <?php echo esc_attr( $avatar_size ); ?>px;
-		--avatar-radius: <?php echo esc_attr( $avatar_radius ); ?>px;">
+		--avatar-radius: <?php echo esc_attr( $avatar_radius ); ?>px;
+		--inner-spacing: <?php echo esc_attr( $inner_spacing ); ?>px;
+		--box-border-radius: <?php echo esc_attr( $box_border_radius ); ?>px;">
 	<?php if ( $block_title ) : ?>
 		<h2><?php echo esc_html( $block_title ); ?></h2>
 	<?php endif; ?>
 
 	<div class="bp-members-preview <?php echo esc_attr( $view_type ); ?>">
-		<?php foreach ( $members as $member ) : ?>
-			<div class="bp-member-item">
-				<a href="<?php echo esc_url( $member['link'] ); ?>">
-					<img src="<?php echo esc_url( $member['avatar_urls']['full'] ); ?>" 
-						alt="<?php echo esc_attr( $member['name'] ); ?>" 
-						class="bp-member-avatar avatar" />
-				</a>
-				<a href="<?php echo esc_url( $member['link'] ); ?>">
-					<div class="bp-member-name"><?php echo esc_html( $member['name'] ); ?></div>
-				</a>
+		<?php if ( $view_type === 'carousel' ) : ?>
+			<div class="swiper">
+				<div class="swiper-container">
+					<div class="swiper-wrapper" slides-per-view="<?php echo esc_attr( $members_per_row ); ?>">
+						<?php foreach ( $members as $member ) : ?>
+							<div class="swiper-slide bp-member-item">
+								<a href="<?php echo esc_url( $member['link'] ); ?>">
+									<img src="<?php echo esc_url( $member['avatar_urls']['full'] ); ?>" 
+										alt="<?php echo esc_attr( $member['name'] ); ?>" 
+										class="bp-member-avatar avatar" />
+								</a>
+								<a href="<?php echo esc_url( $member['link'] ); ?>">
+									<div class="bp-member-name"><?php echo esc_html( $member['name'] ); ?></div>
+								</a>
+							</div>
+						<?php endforeach; ?>
+					</div>
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+				</div>
 			</div>
-		<?php endforeach; ?>
+		<?php else : ?>
+			<?php foreach ( $members as $member ) : ?>
+				<div class="bp-member-item">
+					<a href="<?php echo esc_url( $member['link'] ); ?>">
+						<img src="<?php echo esc_url( $member['avatar_urls']['full'] ); ?>" 
+							alt="<?php echo esc_attr( $member['name'] ); ?>" 
+							class="bp-member-avatar avatar" />
+					</a>
+					<a href="<?php echo esc_url( $member['link'] ); ?>">
+						<div class="bp-member-name"><?php echo esc_html( $member['name'] ); ?></div>
+					</a>
+				</div>
+			<?php endforeach; ?>
+		<?php endif; ?>
 	</div>
 </div>
