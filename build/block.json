@@ -9,10 +9,6 @@
   "description": "A Members list of recently active, popular, and newest members with List, Grid and Carousel.",
   "example": {},
   "attributes": {
-    "title": {
-      "type": "string",
-      "default": "Members Block"
-    },
     "sortType": {
       "type": "string",
       "default": "active"

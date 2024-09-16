@@ -1,12 +1,9 @@
 <?php
 /**
  * Render the BuddyPress Members Block
- *
- * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
 // Extract attributes passed from the block.
-$block_title       = isset( $attributes['title'] ) ? $attributes['title'] : '';
 $sort_type         = isset( $attributes['sortType'] ) ? $attributes['sortType'] : 'active';
 $limit             = isset( $attributes['limit'] ) ? $attributes['limit'] : 10;
 $avatar_size       = isset( $attributes['avatarSize'] ) ? $attributes['avatarSize'] : 100;
@@ -53,9 +50,6 @@ if ( empty( $members ) || ! is_array( $members ) ) {
 		--avatar-radius: <?php echo esc_attr( $avatar_radius ); ?>px;
 		--inner-spacing: <?php echo esc_attr( $inner_spacing ); ?>px;
 		--box-border-radius: <?php echo esc_attr( $box_border_radius ); ?>px;">
-	<?php if ( $block_title ) : ?>
-		<h2><?php echo esc_html( $block_title ); ?></h2>
-	<?php endif; ?>
 
 	<div class="bp-members-preview <?php echo esc_attr( $view_type ); ?>">
 		<?php if ( $view_type === 'carousel' ) : ?>

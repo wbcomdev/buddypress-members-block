@@ -1,15 +1,11 @@
 /**
  * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
  */
 import { __ } from '@wordpress/i18n';
 
 /**
  * React hook that is used to mark the block wrapper element.
  * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 
@@ -25,8 +21,6 @@ import 'swiper/swiper-bundle.css';
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
 import './editor.scss';
 
@@ -34,12 +28,10 @@ import './editor.scss';
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
- *
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { title, sortType, viewType, limit, avatarSize, avatarRadius, membersPerRow, rowSpacing, columnSpacing, innerSpacing, boxBorderRadius, boxBorderColor } = attributes;
+    const { sortType, viewType, limit, avatarSize, avatarRadius, membersPerRow, rowSpacing, columnSpacing, innerSpacing, boxBorderRadius } = attributes;
     const blockProps = useBlockProps();
 
     const [members, setMembers] = useState([]);
@@ -74,13 +66,6 @@ export default function Edit({ attributes, setAttributes }) {
     return (
         <div {...blockProps}>
             <InspectorControls>
-                <PanelBody title={__('Block Title', 'buddypress-members-block')}>
-                    <TextControl
-                        label={__('Block Title', 'buddypress-members-block')}
-                        value={title}
-                        onChange={(value) => setAttributes({ title: value })}
-                    />
-                </PanelBody>
                 <PanelBody title={__('Member Sorting', 'buddypress-members-block')}>
                     <SelectControl
                         label={__('Sort By', 'buddypress-members-block')}
@@ -169,18 +154,6 @@ export default function Edit({ attributes, setAttributes }) {
                         />
                     </PanelBody>
                 )}
-                {(viewType === 'grid') && (
-                    <PanelBody title={__('Color', 'buddypress-members-block')}>
-                        <ColorPicker
-                            color={boxBorderColor}
-                            onChangeComplete={(value) => setAttributes({ boxBorderColor: value.hex })}
-                            disableAlpha
-                            presetColors={[
-                                { name: __('Default', 'buddypress-members-block'), color: '#dddddd' },
-                            ]}
-                        />
-                    </PanelBody>
-                 )}
                 <PanelBody title={__('Avatar Size', 'buddypress-members-block')}>
                     <RangeControl
                         label={__('Avatar Size (px)', 'buddypress-members-block')}
@@ -198,9 +171,6 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                 </PanelBody>
             </InspectorControls>
-
-            {/* Display Block Title */}
-            {title && <h2>{title}</h2>}
 
             <div
                 className={`bp-members-preview ${viewType}`}
